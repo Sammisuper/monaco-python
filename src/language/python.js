@@ -12,7 +12,7 @@ import { getTokens } from './tokenizer';
 var connected = false;
 
 export function getPythonReady(editor, BASE_DIR, url) {
-
+    // 注册语言
     monaco.languages.register({
         id: 'python',
         extensions: ['.py'],
@@ -38,13 +38,15 @@ export function getPythonReady(editor, BASE_DIR, url) {
             };
         }
     });
-
+    console.log("-----", languageService)
     if (languageService) {
+        // 设置文件目录。如果server为远程主机则需要将文件实时同步到远程主机的BASE_DIR目录下（C++需要 Python不需要）
         MonacoServices.install(editor, {
             rootUri: BASE_DIR
         });
 
         console.log("using Web Socket URL = ", url);
+        // 建立连接 创建LSP client
         if (!connected) {
             const webSocket = createWebSocket(url);
             listen({
@@ -77,7 +79,7 @@ function createWebSocket(url) {
 
 function createLanguageClient(connection) {
     return new MonacoLanguageClient({
-        name: "Sample Language Client",
+        name: "Sammi Python LSP client",
         clientOptions: {
             // use a language id as a document selector        
             documentSelector: ['python'],

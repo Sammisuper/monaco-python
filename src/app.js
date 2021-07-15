@@ -1,12 +1,12 @@
 import "./style.css"
-
+const path = require("path");
 import * as appearance from './Appearances.js';
 import * as File from './File';
 import { removeUnnecessaryMenu } from './Appearances';
 import * as webapi from './assets/api';
 
 import { StandaloneCodeEditorServiceImpl } from 'monaco-editor/esm/vs/editor/standalone/browser/standaloneCodeServiceImpl.js';
-import { getCode, getCodeLength, addNewScratchEditor } from "./Editor";
+import { getCode, getCodeLength, addNewScratchEditor,  addNewEditor} from "./Editor";
 import { defaultCode_language } from './DefaultCodes.js';
 
 var overrided = false;
@@ -40,9 +40,15 @@ export class MonacoApp {
 export class MonacoAppScratch {
 	constructor(language = "python", defaultCode = true, author = undefined) {
 		if (defaultCode == true) {
-			this.editor = addNewScratchEditor(defaultCode_language(language, author), language);
+			// addNewEditor(code, language, filePath, fileDir, wsUrlBase)
+			this.editor = addNewEditor(
+				'',
+				language,
+				'file:///Users/wushiming/Desktop/work/study/language/monaco-python/demo/demo.py',
+				'file:///Users/wushiming/Desktop/work/study/language/monaco-python/demo',
+				'ws://127.0.0.1:3000');
 		} else {
-			this.editor = addNewScratchEditor("", language);
+			this.editor = addNewEditor("", language);
 		}
 		appearance.setTheme('xcode-default');
 		removeUnnecessaryMenu();
@@ -85,9 +91,9 @@ async function demo() {
 
 	await new Promise((r) => { setTimeout(() => { r() }, 5000) });
 
-	const testFilePath = "/code/main.cpp";
+	// const testFilePath = "/code/main.cpp";
 	// const testFilePath = "/code/main.c";
-	// const testFilePath = "/code/main.py";
+	const testFilePath = "/code/main.py";
 
 	// CREATE A FILE
 	let file_new = await new Promise((resolve) => {
@@ -118,11 +124,11 @@ async function close() {
 }
 
 function scratchDemo() {
-	let scratchPaper = new MonacoAppScratch("cpp", true, "FuturexGO");
-	setTimeout(() => {
-		console.log(scratchPaper.getCodeLength());
-		console.log(scratchPaper.getCode());
-	}, 10000);
+	let scratchPaper = new MonacoAppScratch("python", true, "FuturexGO");
+	// setTimeout(() => {
+	// 	console.log(scratchPaper.getCodeLength());
+	// 	console.log(scratchPaper.getCode());
+	// }, 10000);
 }
 
 function overrideMonaco() {
