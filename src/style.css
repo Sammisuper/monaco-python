@@ -1,0 +1,101 @@
+.myGlyphMarginClass {
+	background: red;
+    width: 10px !important;
+    height: 10px !important;
+    left: 10px !important;
+    top: 3px;
+    border-radius: 5px;
+}
+.myContentClass {
+	background: lightblue;
+}
+
+
+body {
+    font-family: "Helvetica";
+    transition: background-color .2s;
+}
+
+#header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 50px;
+    right: 0;
+  
+    background-color: #333;
+    color: #fff;
+    font-size: 20px;
+  
+    line-height: 50px;
+    display: inline-block;
+    vertical-align: middle;
+    padding-left: 15px;
+  
+    overflow: hidden;
+    z-index: 0;
+}
+
+#container-0 {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    height: 300px;
+    width: 80vw;
+    right: 0;
+  
+    margin: 0 auto;
+    display: block;
+  
+    transition: 0.2s;
+    overflow: hidden;
+    z-index: 0;
+}
+
+#container-1 {
+    position: fixed;
+    top: 370px;
+    left: 0;
+    height: 300px;
+    width: 80vw;
+    right: 0;
+  
+    margin: 0 auto;
+    display: block;
+  
+    transition: 0.2s;
+    overflow: hidden;
+    z-index: 0;
+}
+
+#container-2 {
+    position: fixed;
+    top: 680px;
+    left: 0;
+    height: 300px;
+    width: 80vw;
+    right: 0;
+  
+    margin: 0 auto;
+    display: block;
+  
+    transition: 0.2s;
+    overflow: hidden;
+    z-index: 0;
+}
+
+#scratch {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    height: 300px;
+    width: 80vw;
+    right: 0;
+  
+    margin: 0 auto;
+    display: block;
+  
+    transition: 0.2s;
+    overflow: hidden;
+    z-index: 0;
+}
