@@ -11,7 +11,7 @@ import { getTokens } from './tokenizer';
 
 var connected = false;
 
-export function getPythonReady(editor, BASE_DIR, url) {
+export function getPythonReady(editor, url) {
     // 注册语言
     monaco.languages.register({
         id: 'python',
@@ -19,10 +19,10 @@ export function getPythonReady(editor, BASE_DIR, url) {
         aliases: ['py', 'PY', 'python', 'PYTHON', 'py3', 'PY3', 'python3', 'PYTHON3'],
     });
 
-    let languageService = false;
-    if (typeof BASE_DIR != "undefined" && typeof url != "undefined") {
-        languageService = true;
-    }
+    let languageService = true;
+    // if (typeof url != "undefined") {
+    //     languageService = true;
+    // }
 
     monaco.languages.registerCompletionItemProvider('python', {
         provideCompletionItems: function (model, position) {
@@ -41,9 +41,7 @@ export function getPythonReady(editor, BASE_DIR, url) {
     console.log("-----", languageService)
     if (languageService) {
         // 设置文件目录。如果server为远程主机则需要将文件实时同步到远程主机的BASE_DIR目录下（C++需要 Python不需要）
-        MonacoServices.install(editor, {
-            rootUri: BASE_DIR
-        });
+        MonacoServices.install(editor);
 
         console.log("using Web Socket URL = ", url);
         // 建立连接 创建LSP client

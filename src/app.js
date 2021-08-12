@@ -39,18 +39,21 @@ export class MonacoApp {
 
 export class MonacoAppScratch {
 	constructor(language = "python", defaultCode = true, author = undefined) {
+		const loc = window.location;
+		const protocol = loc.protocol === 'https:' ? 'wss:' : 'ws:';
+		const address = `${protocol}//${loc.hostname}:8081`;
 		if (defaultCode == true) {
 			// addNewEditor(code, language, filePath, fileDir, wsUrlBase)
 			this.editor = addNewEditor(
 				'',
 				language,
-				'file:///Users/wushiming/Desktop/work/study/language/monaco-python/demo/demo.py',
-				'file:///Users/wushiming/Desktop/work/study/language/monaco-python/demo',
-				'ws://127.0.0.1:3000');
+				// 'file:///Users/wushiming/Desktop/work/study/language/monaco-python/demo/demo.py',
+				// 'file:///Users/wushiming/Desktop/work/study/language/monaco-python/demo',
+				address);
 		} else {
 			this.editor = addNewEditor("", language);
 		}
-		appearance.setTheme('xcode-default');
+		appearance.setTheme('solarized-light');
 		removeUnnecessaryMenu();
 		removeUnnecessaryMenu();
 		removeUnnecessaryMenu();
@@ -124,7 +127,7 @@ async function close() {
 }
 
 function scratchDemo() {
-	let scratchPaper = new MonacoAppScratch("python", true, "FuturexGO");
+	let scratchPaper = new MonacoAppScratch("shell", true, "FuturexGO");
 	// setTimeout(() => {
 	// 	console.log(scratchPaper.getCodeLength());
 	// 	console.log(scratchPaper.getCode());

@@ -3,22 +3,25 @@ import { defaultBindings } from './Actions';
 export var fileCounter = 0;
 
 import { getPythonReady } from './language/python';
+import { getSqlReady } from './language/sql';
 import { getCppReady } from './language/cpp';
+import { getShellReady } from './language/shell';
 
 import { MonacoAppSingleton } from './app';
 import * as webapi from './assets/api';
 import { filePath2lang } from './File';
 
 
-export function newEditor(container_id, code, language, filePath, fileDir, wsUrlBase) {
-	let uri = monaco.Uri.parse(filePath);
-	console.log(`uri: ${uri}`);
+export function newEditor(container_id, code, language, wsUrlBase) {
+	// let uri = monaco.Uri.parse(filePath);
+	// console.log(`uri: ${uri}`);
 	// var model = monaco.editor.getModel(uri);
 	// if (!model)
 	// 	model = monaco.editor.createModel(code, language, uri);
 
 	let editor = monaco.editor.create(document.getElementById(container_id), {
-		model: monaco.editor.createModel(code, language, uri),
+		model: monaco.editor.createModel(code, language),
+		'vs/nls': {availableLanguages: {'*':'zh-cn'}},
 		automaticLayout: true,
 		glyphMargin: true,
 		lightbulb: {
@@ -55,13 +58,13 @@ export function newEditor(container_id, code, language, filePath, fileDir, wsUrl
 						}
 						let filePath = uri.path;
 						let p = new Promise((resolve) => {
-							webapi.default.file_content(MonacoAppSingleton.currentProject.projectId, filePath, (obj) => {
-								resolve(obj.data['content']);
-							});
+							// webapi.default.file_content(MonacoAppSingleton.currentProject.projectId, filePath, (obj) => {
+							// 	resolve(obj.data['content']);
+							// });
 						});
 						p.then((code) => {
-							model = monaco.editor.createModel(code, filePath2lang(filePath), uri);
-							resolve(_this._buildReference(model));
+							// model = monaco.editor.createModel(code, filePath2lang(filePath), uri);
+							// resolve(_this._buildReference(model));
 						});
 					} else {
 						resolve(_this._buildReference(model));
@@ -74,7 +77,13 @@ export function newEditor(container_id, code, language, filePath, fileDir, wsUrl
 
 	// Language Client for IntelliSense
 	if (language == 'python') {
-		getPythonReady(editor, fileDir, wsUrlBase + "/python");
+		getPythonReady(editor, wsUrlBase + "/python");
+	}
+	if (language == 'sql') {
+		getSqlReady(editor, wsUrlBase + "/sql");
+	}
+	if (language == 'shell') {
+		getShellReady(editor, wsUrlBase + "/shell");
 	}
 	if (language == 'cpp' || language == 'c') {
 		getCppReady(editor, fileDir, wsUrlBase + "/cpp");
@@ -95,14 +104,14 @@ export function newEditor(container_id, code, language, filePath, fileDir, wsUrl
 	return editor;
 }
 
-export function addNewEditor(code, language, filePath, fileDir, wsUrlBase) {
+export function addNewEditor(code, language, wsUrlBase) {
 	let new_container = document.createElement("DIV");
 	new_container.id = "container-" + fileCounter.toString(10);
 	new_container.className = "container";
 	new_container.style.height = "100%"
 	new_container.style.width = "100%"
 	document.getElementById("editorRoot").appendChild(new_container);
-	let editor = newEditor(new_container.id, code, language, filePath, fileDir, wsUrlBase);
+	let editor = newEditor(new_container.id, code, language, wsUrlBase);
 	fileCounter += 1;
 	return editor;
 }
